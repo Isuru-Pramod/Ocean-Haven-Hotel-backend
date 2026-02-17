@@ -2,6 +2,8 @@ from web3 import Web3
 import json
 from config import SEPOLIA_RPC_URL, CONTRACT_ADDRESS
 
+
+
 # Connect to Sepolia
 web3 = Web3(Web3.HTTPProvider(SEPOLIA_RPC_URL))
 
@@ -13,6 +15,9 @@ contract = web3.eth.contract(
     address=Web3.to_checksum_address(CONTRACT_ADDRESS),
     abi=contract_abi
 )
+
+
+
 
 def get_asset_count():
     return contract.functions.assetCount().call()

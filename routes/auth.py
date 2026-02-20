@@ -4,6 +4,7 @@ from models.user import User
 from flask_jwt_extended import create_access_token
 
 
+
 auth = Blueprint("auth", __name__)
 
 @auth.route("/register", methods=["POST"])
@@ -25,21 +26,31 @@ def register():
 
     return jsonify({"message": "Registered successfully"})
 
+from flask_jwt_extended import create_access_token, decode_token
+
 @auth.route("/login", methods=["POST"])
 def login():
+    print("Incoming data:", request.json)
+
     data = request.json
     user = User.query.filter_by(email=data["email"]).first()
 
     if not user:
-        return jsonify({"message": "User not found"}), 404
+        return jsonify({"message": "Invalid credentials"}), 401
 
     if not bcrypt.check_password_hash(user.password, data["password"]):
         return jsonify({"message": "Invalid credentials"}), 401
 
-    token = create_access_token(identity={
-        "id": user.id,
-        "role": user.role,
-        "wallet": user.wallet_address
-    })
+    token = create_access_token(
+        identity=str(user.id),
+        additional_claims={
+            "role": user.role,
+            "wallet": user.wallet_address
+        }
+    )
+    decoded = decode_token(token)
 
+    print("\n========== JWT DECODED ==========")
+    print(decoded)
+    print("=================================\n")
     return jsonify({"token": token})

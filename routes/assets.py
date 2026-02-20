@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from services.blockchain import (
     build_create_asset_tx,
     build_buy_primary_tx,
@@ -20,12 +20,19 @@ assets = Blueprint("assets", __name__)
 @jwt_required()
 def create_asset():
 
-    identity = get_jwt_identity()
+    user_id = get_jwt_identity()   # "1"
+    claims = get_jwt()             # full JWT payload
 
-    
+    print("User identity:", user_id)
 
-    if identity["role"] != "admin":
-        return jsonify({"success": False, "message": "Admin only"}), 403
+    # ✅ Check admin
+    if claims["role"] != "admin":
+        return jsonify({"error": "Admin only"}), 403
+
+    # ✅ Get wallet from claims
+    user_wallet = claims["wallet"]
+
+    print("User wallet:", user_wallet)
 
     data = request.json
 
@@ -34,7 +41,7 @@ def create_asset():
         data["location"],
         int(data["total_shares"]),
         int(data["share_price"]),
-        identity["wallet"]
+        claims["wallet"]
     )
 
     return jsonify(result)

@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 # Config
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
-app.config["JWT_SECRET_KEY"] = "Isuru@123"
+app.config["JWT_SECRET_KEY"] = "Isuru@123_super_secure_jwt_secret_key_2026!"
 
 # ✅ Extensions
 db.init_app(app)

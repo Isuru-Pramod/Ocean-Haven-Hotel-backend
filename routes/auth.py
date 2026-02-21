@@ -52,5 +52,6 @@ def login():
 
     print("\n========== JWT DECODED ==========")
     print(decoded)
+    print("token:", token)
     print("=================================\n")
     return jsonify({"token": token})

@@ -17,6 +17,8 @@ db.init_app(app)
 jwt.init_app(app)
 bcrypt.init_app(app)
 
+
+
 # CORS
 CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}}, supports_credentials=True)
 

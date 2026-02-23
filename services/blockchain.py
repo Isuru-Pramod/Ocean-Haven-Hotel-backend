@@ -109,6 +109,31 @@ def get_listing(listing_id):
 # ANALYTICS FUNCTIONS
 # ==================================================
 
+def get_all_assets():
+    try:
+        assets = contract.functions.getAllAssets().call()
+
+        formatted = []
+
+        for asset in assets:
+            formatted.append({
+                "id": asset[0],
+                "name": asset[1],
+                "location": asset[2],
+                "description": asset[3],
+                "imageURL": asset[4],
+                "totalShares": asset[5],
+                "sharePrice": asset[6],
+                "sharesSold": asset[7],
+                "creator": asset[8],
+                "isActive": asset[9]
+            })
+
+        return {"success": True, "assets": formatted}
+
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
 def get_top_10():
     try:
         total = contract.functions.assetCount().call()
@@ -220,10 +245,7 @@ def build_delete_asset_tx(asset_id, wallet):
     except Exception as e:
         return {"success": False, "error": str(e)}
 
-
-# --------------------------------------------------
 # BUY PRIMARY SHARES
-# --------------------------------------------------
 
 def build_buy_primary_tx(asset_id, amount, wallet, value_wei):
     try:

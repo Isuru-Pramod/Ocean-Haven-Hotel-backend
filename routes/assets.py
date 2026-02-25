@@ -11,7 +11,7 @@ from services.blockchain import (
     build_delete_asset_tx,     
     get_asset,
     get_all_assets,
-    get_total_assets,
+    get_all_listings, 
     get_listing
 )
 
@@ -206,11 +206,6 @@ def buy_listing():
 
 # PUBLIC READ ENDPOINTS
 
-@assets.route("/total", methods=["GET"])
-def total_assets():
-    return jsonify(get_total_assets())
-
-
 @assets.route("/<int:asset_id>", methods=["GET"])
 def single_asset(asset_id):
     return jsonify(get_asset(asset_id))
@@ -224,3 +219,7 @@ def single_listing(listing_id):
 @assets.route("/all", methods=["GET"])
 def get_all_assets_route():
     return jsonify(get_all_assets())
+
+@assets.route("/listings/all", methods=["GET"])
+def get_all_listings_route():
+    return jsonify(get_all_listings())

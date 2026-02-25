@@ -54,11 +54,23 @@ def get_asset_count():
     except Exception:
         return 0
 
-
-def get_total_assets():
+def get_all_listings():
     try:
-        total = contract.functions.assetCount().call()
-        return {"success": True, "total_assets": total}
+        listings = contract.functions.getAllListings().call()
+
+        formatted = []
+
+        for listing in listings:
+            formatted.append({
+                "assetId": listing[0],
+                "seller": listing[1],
+                "amount": listing[2],
+                "pricePerShare": listing[3],
+                "active": listing[4]
+            })
+
+        return {"success": True, "listings": formatted}
+
     except Exception as e:
         return {"success": False, "error": str(e)}
 
@@ -73,8 +85,8 @@ def get_asset(asset_id):
                 "id": asset[0],
                 "name": asset[1],
                 "location": asset[2],
-                "description": asset[3],   # 🔥 NEW
-                "imageURL": asset[4],      # 🔥 NEW
+                "description": asset[3],  
+                "imageURL": asset[4],     
                 "totalShares": asset[5],
                 "sharePrice": asset[6],
                 "sharesSold": asset[7],

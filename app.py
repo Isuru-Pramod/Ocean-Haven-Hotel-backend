@@ -34,18 +34,18 @@ print(app.url_map)
 with app.app_context():
     db.create_all()
 
-    # if not User.query.filter_by(email="admin@gmail.com").first():
-    #     from extensions import bcrypt
-    #     admin = User(
-    #         username="Admin",
-    #         email="admin1@gmail.com",
-    #         password=bcrypt.generate_password_hash("123456").decode("utf-8"),
-    #         role="admin",
-    #         wallet_address="0xcd40e5257857BCC399A9a246B277Da2D86C862e8"
-    #     )
-    #     db.session.add(admin)
-    #     db.session.commit()
-    #     print("Admin user created.")
+    if not User.query.filter_by(email="admin2@gmail.com").first():
+        from extensions import bcrypt
+        admin = User(
+            username="Admin",
+            email="admin2@gmail.com",
+            password=bcrypt.generate_password_hash("123456").decode("utf-8"),
+            role="admin",
+            wallet_address="0xcd40e5257857BCC399A9a246B277Da2D86C862e8"
+        )
+        db.session.add(admin)
+        db.session.commit()
+        print("Admin user created.")
 
 if __name__ == "__main__":
     
